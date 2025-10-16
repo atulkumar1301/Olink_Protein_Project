@@ -1,4 +1,5 @@
 library(data.table)
+library(plyr)
 library(dplyr)
 library(tibble)
 library(cowplot)
@@ -50,6 +51,8 @@ for (i in seq (2, 2927, 98)){
       geom_histogram(aes (y=..density..), fill = "white", alpha = 0.5, position = "identity") +
       geom_density(alpha = 0.25, linetype = "dashed")
     p <- p + ylab ("Density")
+    m <- aggregate(Olink_prot[[var_x]], list(Olink_prot$Type), mean, na.rm = TRUE)
+    p <- p + geom_vline(xintercept=m$x, color= c ("blue", "red"), linetype = "longdash")
     p <- p + theme(plot.title = element_text(family = "serif", size=18, face = "bold"),
                    axis.title.x = element_text(family = "serif", size=8),
                    axis.title.y = element_text(family = "serif", size=8),
