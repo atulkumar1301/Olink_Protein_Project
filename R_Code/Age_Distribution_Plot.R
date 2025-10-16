@@ -3,7 +3,7 @@ library(ggplot2)
 library(tidyr)
 
 options(scipen = 999) ## To avoid scientific notation
-df <- fread ("~/Library/CloudStorage/OneDrive-UniversityofEasternFinland/Projects/Merja_Sui_Olink_Project/Olink_Nervous.txt")
+df <- fread ("~/Library/CloudStorage/OneDrive-UniversityofEasternFinland/Projects/Merja_Sui_Olink_Project/7_Olink_Endocrine_Control.txt")
 
 #col_names <- as.data.frame (colnames (df))
 
