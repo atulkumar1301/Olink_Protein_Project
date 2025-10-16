@@ -11,17 +11,24 @@ newnames <- c ('ERVV_1', 'HLA_A', 'HLA_DRA', 'HLA_E')
 
 df_Olink <- df_Olink %>% rename_at(vars (oldnames), ~ newnames)
 
-d = "Case"
+d = "UKBB-Olink"
 df_Olink <- add_column(df_Olink, Type = d, .after = 693)
 
 df_wellness <- fread ("~/Library/CloudStorage/OneDrive-UniversityofEasternFinland/Projects/Merja_Sui_Olink_Project/NORNAL_Wellness_data_set/20211408_Magis_NPX_2022-01-24/Olink_Protein_Data.txt")
-e = "Control"
+e = "Wellness-Olink"
 df_wellness <- add_column(df_wellness, Type = e, .after = 2)
 
 Olink_UKBB <- df_Olink [,-1:-693]
 Olink_wellness <- df_wellness [, -1:-2]
 
 df_Olink_wellness_merged <- bind_rows(Olink_UKBB, Olink_wellness)
+
+p1 <- 
+  ggplot(df_Olink_wellness_merged) +
+  aes_string(x = "Type", y = "A1BG", color = "Type") +
+  geom_boxplot()
+p1 <- p1 + theme(legend.title = element_text(family = "serif", size=5),
+                 legend.text = element_text(family = "serif", size=5))
 
 k = 1
 for (i in seq (2, 2927, 50)){
@@ -38,7 +45,7 @@ for (i in seq (2, 2927, 50)){
   my_plots <- lapply(names(Olink_prot), function(var_x){
     p <- 
       ggplot(Olink_prot) +
-      aes_string(x = "Type", y = var_x) +
+      aes_string(x = "Type", y = var_x, color = "Type") +
       geom_boxplot()
     #p <- p + ylab ("Density")
     p <- p + theme(plot.title = element_text(family = "serif", size=18, face = "bold"),
@@ -47,10 +54,13 @@ for (i in seq (2, 2927, 50)){
                    axis.text.x = element_text(family = "serif", size=5),
                    axis.text.y = element_text(family = "serif", size=5),
                    legend.title = element_text(family = "serif", size=5),
+                   legend.position = "none",
                    legend.text = element_text(family = "serif", size=5))
   })
   my_plots[1] <- NULL
-  pl <- plot_grid(plotlist = my_plots) 
-  ggsave (file = paste0 ("~/Library/CloudStorage/OneDrive-UniversityofEasternFinland/Projects/Merja_Sui_Olink_Project/NORNAL_Wellness_data_set/20211408_Magis_NPX_2022-01-24/Result/Box_Plots/", k, "_Box_Plot.pdf"), plot = pl, width = 11.69, height = 8.27, units = "in")
+  legend <- get_legend(
+    p1)
+  pl <- plot_grid(plotlist = my_plots, legend) 
+  ggsave (file = paste0 ("~/Library/CloudStorage/OneDrive-UniversityofEasternFinland/Projects/Merja_Sui_Olink_Project/Box_Plots/", k, "_Box_Plot.pdf"), plot = pl, width = 11.69, height = 8.27, units = "in")
   k = k + 1
 }
