@@ -30,6 +30,7 @@ for (i in colnames (df_wellness_Male)){
 
 write.table (TABLE, (file = paste0 ("~/Library/CloudStorage/OneDrive-UniversityofEasternFinland/Projects/Merja_Sui_Olink_Project/NORNAL_Wellness_data_set/20211408_Magis_NPX_2022-01-24/Result/ISB_Data_Biomodality_Test_Male.txt")), sep="\t", quote=FALSE, row.names=FALSE, col.names=TRUE)
 
+j <- 1
 
 for (i in colnames (df_wellness_Female)){
   if (i %in% colnames (df_2)) next
